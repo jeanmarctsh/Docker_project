@@ -1,4 +1,4 @@
 # 🚀  Déploiement avec Docker
 
 
-## 🚧 Projet en cours de developpement.  
+## 🚧 Projet en cours de développement.  
