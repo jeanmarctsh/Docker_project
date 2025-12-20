@@ -1,0 +1,32 @@
+services:
+
+    mysql:
+        image: mysql:9
+        ports:
+            - "3306:3306"
+        container_name: mysql
+        restart: unless-stopped
+        volumes:
+            - bdd_data:/var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_USER: ${MYSQL_USER}
+
+    
+    phpmyadmin:
+        image: phpmyadmin:5.2.3
+        container_name: phpmyadmin
+        ports:
+            - "8080:80"
+        depends_on:
+            - mysql
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_PORT=3306
+
+
+
+
+volumes:
+  bdd_data:
