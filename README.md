@@ -3,7 +3,7 @@
 🚀 Apprentissage de Docker ( docker-compose, docker swarm)
 
 ---
-__📌 Veuillez utilisé la Branche .... pour voir toutes les différentes configurations__
+__📌 Veuillez utilisé la Branche docker pour voir toutes les différentes configurations__
 
 ---
 
