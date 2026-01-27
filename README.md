@@ -1,25 +1,37 @@
-# Docker_project
+# 🚀 DEPLOIEMENT AVEC DOCKER
 
-🚀 Apprentissage de Docker ( docker-compose, docker swarm)
-
----
-__📌 Veuillez utilisé la Branche docker pour voir toutes les différentes configurations__
+## Prise en main et utilisation de docker (incluant docker-compose, docker swarm)
 
 ---
-
-## 📑 SOMMAIRES
-
-- [📌 DESCRIPTION](#-description)
-- [📫 CONTACT](#-contact)
-  
----
-
-## 📌 DESCRIPTION
-
-Dans le monde informatique actuel, l'installation, le test, l'utulisation, le déploiement d'une application, d'un logiciel ne devrait plus être un frein pour l'homme ainsi que son outil de travail qui est l'ordinateur. 
-Dans le passé, il y avait une certaine exigence en matière de compataibilité technique pour les ordinateurs(pilotes, système d'exploitation, etc...) car faire tourner un logiciel, installer une application etc... demandait d'avoir les bonnes configurations voir le même système d'exploitation. Mais aujourd'hui Docker apporte une certaine souplesse qui permet non seulement d'installer un logiciel, de déployer une application mais aussi d'assurer une redondance ainsi qu'une haute disponibilité. Et ce,  sur n'importe quel système d'exploitation sans casser les différentes configurations qui existent au sein d'un ordinateur hôte. Et ce, de manière totalement isolé. 
+__📌 Veuillez utiliser la Branche docker pour voir toutes les différentes configurations__
 
 ---
+
+## 🔧 BUT
+
+Installer et maîtriser Docker pour déployer facilement des solutions isolées et autonomes, garantissant portabilité et simplicité dans les environnements IT.
+
+---
+
+## 🎯 OBJECTIFS
+
+Déployer plusieurs services et applications dans des conteneurs isolés et portables, de manière sécurisée.
+
+Gérer les environnements de manière cohérente grâce à Docker Compose et Docker Swarm.
+
+Simplifier le déploiement et la maintenance des solutions IT, sans interférer avec le système hôte.
+
+Permettre la réplication des environnements entre machines locales et serveurs IT.
+
+---
+
+## ⚙️ Prérequis
+
+- Linux ou macOS (Windows avec WSL2 recommandé)
+- Docker installé ([Documentation officielle](https://docs.docker.com/engine/install))
+- Docker Compose installé ([Documentation officielle](https://docs.docker.com/compose/install))
+- Docker Swarm installé (optionnel, nécessaire uniquement pour l'orchestration avec Docker Swarm) ([Documentation officielle](https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/))
+
 
 ## 📫 CONTACT
 
