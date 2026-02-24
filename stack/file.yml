@@ -3,13 +3,13 @@ version: "3.8"
 services:
 
   mongodb: 
-    image: mongo:8.2
+    image: mongo:6.0.27-jammy
     secrets:
       - mongo_username
       - mongo_pwd
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: replicated # Utile pour le mode de déploiement à utiliser (comment et combien des tâches?)
+      replicas: 1 # signifie nombre d'instance à déployer
 
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
@@ -21,17 +21,24 @@ services:
     volumes:
       - db:/data/db
 
+    ## Fonctionnement du container tel que souhaité et action à prendre en compte en cas de non fonctionnement souhaité
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"] # commande à exécuter sur le CMD
+      interval: 5s # Vérification effective toutes les 5 secondes
+      timeout: 5s # durée maximale pour l'exécution d'une commande
+      retries: 5 # container défaillant après 5 tentatives
+
     
   mongo_express:
-    image: mongo-express:1.0.2-20-alpine3.19
+    image: mongo-express:1.0.2-18
     ports:
-      - "8080:8081"
+      - "8081:8081"
     secrets:
       - mongo_username
       - mongo_pwd
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME_FILE: /run/secrets/mongo_username
       ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo_pwd
@@ -51,12 +58,17 @@ secrets:
 
 
 
-
+## il peut avoir modification en fonction du besoin et du projet
 volumes:
   db:
     driver: local
+    
     
 
 networks:
   swarm_network:
     driver: overlay
+
+
+
+## Déploiement local, partie test vu que l'image officielle de mongo-express n'est plus maintenue
