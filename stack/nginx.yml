@@ -1,0 +1,20 @@
+#projet en cours de déploiement 
+version: "3.8"
+services:
+  web_nginx:
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - web_data_nginx:/usr/share/nginx/html
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        deploy: 15s
+        max-attemps: 5
+
+## Rajout du reverse proxy progressivement et en fonction du besoin
+
+volumes:
+  web_data_nginx: {}
