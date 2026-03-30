@@ -1,0 +1,89 @@
+
+## OBJECTIF ? MAITRISE, PRISE EN MAIN ET DEPLOIEMENT D'UNE APPLICATION PYTHON AVEC DOCKER SWARM POUR UNE HAUTE DISPONIBILITE
+
+
+version: "3.8"
+
+
+services: 
+
+## Première partie
+## l'image sera téléchargée via le docker registry une fois ok
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - "8501:8501"
+    environment:
+      DB_HOST: mysql
+      DB_NAME : hoteldatabase
+      DB_USER : marco
+      DB_PASS_PATH: /run/secrets/mysql_secret
+    secrets:
+      - mysql_secret
+    networks:
+      - swarm_network
+
+
+## Deuxième partie
+  mysql:
+    image: mysql:8.0
+    deploy:
+      mode: replicated 
+      replicas: 1 
+      restart_policy:
+        condition: on-failure 
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.role == manager
+
+    environment:
+      MYSQL_DATABASE: hoteldatabase
+      MYSQL_USER: marco
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_secret
+    secrets:
+      - mysql_secret  
+    
+
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u marco -p$$(cat /run/secrets/mysql_secret)"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - bdd_data:/var/lib/mysql
+      - ./db/commands.sql:/docker-entrypoint-initdb.d/commands.sql
+    networks:
+      - swarm_network
+  
+
+## Troisième partie phpmyadmin plutard  
+
+
+networks:
+  swarm_network:
+    driver: overlay
+
+
+volumes:
+  bdd_data:
+    driver: local
+
+
+secrets:
+  mysql_secret:
+    external: true 
+
+
