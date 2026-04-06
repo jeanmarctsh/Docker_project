@@ -24,9 +24,9 @@ services:
     ports:
       - "8501:8501"
     environment:
-      DB_HOST: mysql
-      DB_NAME : hoteldatabase
-      DB_USER : marco
+      DB_HOST: $DB_HOST
+      DB_NAME : $DB_NAME
+      DB_USER : $DB_USER
       DB_PASS_PATH: /run/secrets/mysql_secret
     secrets:
       - mysql_secret
@@ -50,8 +50,8 @@ services:
           - node.role == manager
 
     environment:
-      MYSQL_DATABASE: hoteldatabase
-      MYSQL_USER: marco
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_USER: $MYSQL_USER
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_secret
     secrets:
       - mysql_secret  
