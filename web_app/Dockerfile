@@ -10,7 +10,7 @@ RUN groupadd -r appgroup && useradd -r -g appgroup -u 1001 marco
 
 WORKDIR /home/apk
 
-COPY ./app /home/apk/
+COPY ./Hotel-Management-using-SQL-main/app /home/apk/ /home/apk/
 
 COPY w-db.sh /w-db.sh
 
