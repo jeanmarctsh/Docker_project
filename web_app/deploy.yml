@@ -10,9 +10,7 @@ services:
 ## Première partie
 ## l'image sera téléchargée via le docker registry une fois ok
   myapp:
-    build:
-      context: .
-      dockerfile: Dockerfile  
+    image: marco24561/my-app:1.0
     deploy:
       mode: replicated
       replicas: 3
