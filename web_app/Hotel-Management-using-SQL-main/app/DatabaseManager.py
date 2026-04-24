@@ -54,6 +54,7 @@ def createTables():
         print("OK ", query)
 
 
+
 def addDefaultValues():
     queries = [
         "insert into customerdetails values(115,'669524138972','Rohit M S',20,'9358432100','#41, 1st Main, Marathahalli, Bangalore',1500,'2022-11-12','2022-11-13')",
@@ -84,121 +85,204 @@ def addForeignKeys():
 
 
 def addCustDetails(aadhar, cname, cage, phone, caddress, finalprice, checkin, checkout):
-    query = 'select cid from customerdetails order by cid desc limit 1'
-    cur.execute(query)
-    for row in cur:
-        cid = int(row[0])
-    cid += 10
-    query = f"insert into customerdetails values({cid},{aadhar},'{cname}',{cage},{phone},'{caddress}',{finalprice},'{checkin}','{checkout}')"
-    cur.execute(query)
+    # Partie ID (on simplifie avec fetchone)
+    cur.execute('select cid from customerdetails order by cid desc limit 1')
+    row = cur.fetchone()
+    cid = (int(row[0]) + 10) if row else 10
+
+    # INSERTION SÉCURISÉE
+    # 1. On utilise des %s comme placeholders
+    sql = "INSERT INTO customerdetails VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    
+    # 2. On regroupe les variables dans un tuple
+    values = (cid, aadhar, cname, cage, phone, caddress, finalprice, checkin, checkout)
+
+    # 3. Le connecteur fait le travail de sécurité
+    cur.execute(sql, values)
     con.commit()
+    
     return cid
 
 
+
 def addEmployeeDetails(empid, aadhar, ename, age, gender, roleid):
-    query = f'select sal from roles where roleid = {roleid}'
-    cur.execute(query)
-    for row in cur:
+    # 1. Récupération sécurisée du salaire
+    query_sal = 'SELECT sal FROM roles WHERE roleid = %s'
+    cur.execute(query_sal, (roleid,)) # On passe roleid dans un tuple
+    row = cur.fetchone()
+    
+    if row:
         sal = float(row[0])
-    query = f"insert into employees values({empid},'{aadhar}','{ename}',{age},'{gender}',{roleid},{sal})"
-    cur.execute(query)
+    else:
+        print("Erreur : Role ID inexistant")
+        return
+
+    # 2. Insertion sécurisée de l'employé
+    query_insert = "INSERT INTO employees VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    data = (empid, aadhar, ename, age, gender, roleid, sal)
+    
+    cur.execute(query_insert, data) # Le connecteur nettoie toutes les variables ici
     con.commit()
 
 
+
 def addItem(itemid, itemname, itemrate):
-    query = f"insert into items values({itemid},'{itemname}',{itemrate})"
-    cur.execute(query)
+    # 1. On définit la structure avec des %s
+    sql = "INSERT INTO items VALUES (%s, %s, %s)"
+    
+    # 2. On regroupe les données dans un tuple
+    val = (itemid, itemname, itemrate)
+    
+    # 3. On laisse le connecteur gérer la sécurité
+    cur.execute(sql, val)
     con.commit()
 
 
 def addRole(roleid, rolename, rolesal):
-    query = f"insert into roles values({roleid},'{rolename}',{rolesal})"
-    cur.execute(query)
+    # La structure de la requête avec des placeholders %s
+    sql = "INSERT INTO roles VALUES (%s, %s, %s)"
+    
+    # Les données isolées dans un tuple
+    val = (roleid, rolename, rolesal)
+    
+    # Exécution sécurisée : le driver s'occupe de l'échappement
+    cur.execute(sql, val)
     con.commit()
+
 
 
 def addRoomType(roomtypeid, bednum, ac, roomrate, desc):
-    query = f"insert into roomtype values({roomtypeid},{bednum},'{ac}',{roomrate},'{desc}')"
-    cur.execute(query)
+    # Placeholders %s pour chaque valeur
+    sql = "INSERT INTO roomtype VALUES (%s, %s, %s, %s, %s)"
+    
+    # Regroupement des données dans un tuple
+    val = (roomtypeid, bednum, ac, roomrate, desc)
+    
+    # Exécution sécurisée
+    cur.execute(sql, val)
     con.commit()
+
 
 
 def addRoomService(itemid, quantity, rscid):
-    query = 'select orderid from roomservice order by orderid desc limit 1'
-    cur.execute(query)
-    for row in cur:
-        orderid = int(row[0])
-    orderid += 10
-    query = f"insert into roomservice values({orderid},{itemid},{quantity},{rscid})"
-    cur.execute(query)
+    # 1. Récupération du dernier orderid (plus propre avec fetchone)
+    cur.execute('SELECT orderid FROM roomservice ORDER BY orderid DESC LIMIT 1')
+    row = cur.fetchone()
+    orderid = (int(row[0]) + 10) if row else 10
+
+    # 2. Insertion sécurisée
+    sql = "INSERT INTO roomservice VALUES (%s, %s, %s, %s)"
+    val = (orderid, itemid, quantity, rscid)
+    
+    cur.execute(sql, val)
     con.commit()
+
 
 
 def addRoom(roomnum, roomid, size):
-    query = f"insert into room values({roomnum},{roomid},{size})"
-    cur.execute(query)
+    # Utilisation des placeholders %s
+    sql = "INSERT INTO room VALUES (%s, %s, %s)"
+    
+    # Les données sont transmises séparément dans un tuple
+    val = (roomnum, roomid, size)
+    
+    cur.execute(sql, val)
     con.commit()
+
 
 
 def addBookingDetails(cid, totalamt):
-    query = 'select bid from bookingdetails order by bid desc limit 1'
-    cur.execute(query)
-    for row in cur:
-        bid = int(row[0])
-    bid += 10
-    print(bid)
-    query = f'select checkin from customerdetails where cid = {cid}'
-    cur.execute(query)
-    for row in cur:
-        checkin = row[0]
-    query = f'select checkout from customerdetails where cid = {cid}'
-    cur.execute(query)
-    for row in cur:
-        checkout = row[0]
-    query = f"insert into bookingdetails values({bid},{cid},'{checkin}','{checkout}',{totalamt})"
-    cur.execute(query)
+    # 1. Récupérer le dernier ID de réservation (Sûr - statique)
+    cur.execute('SELECT bid FROM bookingdetails ORDER BY bid DESC LIMIT 1')
+    row = cur.fetchone()
+    bid = (int(row[0]) + 10) if row else 10
+
+    # 2. Récupérer les dates en UNE SEULE fois de manière SÉCURISÉE
+    # On utilise %s pour le CID
+    query_dates = 'SELECT checkin, checkout FROM customerdetails WHERE cid = %s'
+    cur.execute(query_dates, (cid,))
+    result = cur.fetchone()
+
+    if result:
+        checkin, checkout = result
+    else:
+        print("Erreur : Client introuvable")
+        return
+
+    # 3. Insertion finale SÉCURISÉE
+    sql_insert = "INSERT INTO bookingdetails VALUES (%s, %s, %s, %s, %s)"
+    data = (bid, cid, checkin, checkout, totalamt)
+    
+    cur.execute(sql_insert, data)
     con.commit()
 
 
+
 def getFinalAmount(cid):
-    query1 = f"select finalprice from customerdetails where cid={cid}"
-    cur.execute(query1)
-    for row1 in cur:
-        p1 = float(row1[0])
-    query2 = f"select sum(items.rate * roomservice.quantity) as total_price from roomservice join items on roomservice.itemid = items.itemid where roomservice.rscid = {cid}"
-    cur.execute(query2)
-    for row2 in cur:
-        try:
-            p2 = float(row2[0])
-        except TypeError:
-            p2 =0
-        else:
-            p2 = float(row2[0])
+    # 1. Récupération sécurisée du prix de base
+    query1 = "SELECT finalprice FROM customerdetails WHERE cid = %s"
+    cur.execute(query1, (cid,))
+    row1 = cur.fetchone()
+    p1 = float(row1[0]) if row1 else 0.0
+
+    # 2. Calcul sécurisé du total roomservice
+    query2 = """SELECT SUM(items.rate * roomservice.quantity) 
+                FROM roomservice 
+                JOIN items ON roomservice.itemid = items.itemid 
+                WHERE roomservice.rscid = %s"""
+    cur.execute(query2, (cid,))
+    row2 = cur.fetchone()
+    
+    # Gestion du cas où il n'y a pas de service de chambre (SUM renvoie None)
+    p2 = float(row2[0]) if row2 and row2[0] is not None else 0.0
+    
     return p1 + p2
 
 
+
 def getRoomType(roomtypeid):
-    query = f'select * from roomtype where roomtypeid={roomtypeid}'
-    cur.execute(query)
-    for row in cur:
-        return row
+    # Utilisation du placeholder %s
+    query = 'SELECT * FROM roomtype WHERE roomtypeid = %s'
+    
+    # Passage de la variable dans un tuple
+    cur.execute(query, (roomtypeid,))
+    
+    # fetchone() est idéal ici car l'ID est unique (Primary Key)
+    return cur.fetchone()
+
 
 
 def selectRoom(roomtypeid, checkin, checkout):
-    query = f'select rate from roomtype where roomtypeid={roomtypeid}'
-    cur.execute(query)
-    for row in cur:
+    # 1. Requête paramétrée avec %s
+    query = 'SELECT rate FROM roomtype WHERE roomtypeid = %s'
+    cur.execute(query, (roomtypeid,))
+    row = cur.fetchone()
+    
+    # 2. Vérification si la chambre existe
+    if row:
         rate = int(row[0])
+    else:
+        print("Erreur : Type de chambre introuvable")
+        return 0
+    
+    # 3. Calcul de la durée
     delta = checkout - checkin
     totalprice = rate * delta.days
+    
     return totalprice
 
 
+
 def getCustDetails(cid):
-    query = f'select * from customerdetails where cid={cid}'
-    cur.execute(query)
-    for row in cur:
-        return row
+    # Requête paramétrée
+    query = 'SELECT * FROM customerdetails WHERE cid = %s'
+    
+    # On passe le CID dans un tuple
+    cur.execute(query, (cid,))
+    
+    # fetchone() est parfait ici car le CID est unique
+    return cur.fetchone()
+
 
 
 def getAllItems():
@@ -251,4 +335,5 @@ def getAllOrders():
 
 
 
-### Réglage pour les injonctions sql
+### Réglage pour les injonctions sql --- fetch info
+### code test pour déployer l'application avec docker
