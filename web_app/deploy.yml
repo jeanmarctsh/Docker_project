@@ -62,7 +62,7 @@ services:
       retries: 5
     volumes:
       - bdd_data:/var/lib/mysql
-      - ./db/commands.sql:/docker-entrypoint-initdb.d/commands.sql
+      - .Hotel-Management-using-SQL-main/db/commands.sql:/docker-entrypoint-initdb.d/commands.sql
     networks:
       - swarm_network
   
