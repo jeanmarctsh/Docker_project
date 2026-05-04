@@ -28,7 +28,7 @@ Docker-project/
 ├── web_app
 │   ├── Hotel-Management-using-SQL-main/
 │   │   ├── deploy.yml                      # Fichier de déploiement swarm(projet plus MYSQL)
-│   │   ├── Dockerfile                      # Fichier de configuration pour la construction de l'image
+│   │   ├── Dockerfile                      # Fichier pour la construction de l'image et les bonnes pratiques à adopter
 │   │   ├── w-db.sh                         # Script d'attente de la base de données
 │   └── README.md                           # Description générale du projet
 
