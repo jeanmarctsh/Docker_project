@@ -30,7 +30,7 @@ Docker-project/
 │   │   ├── deploy.yml                      # Fichier de déploiement swarm(projet plus MYSQL)
 │   │   ├── Dockerfile                      # Fichier pour la construction de l'image et les bonnes pratiques à adopter
 │   │   ├── w-db.sh                         # Script d'attente de la base de données
-│   └── README.md                           # Description générale du projet
+└── └── README.md                           # Description générale du projet
 
 ```
         
