@@ -9,4 +9,4 @@ while ! mysqladmin ping -h "$DB_HOST" --silent; do
 done
 
 echo "MySQL is up - starting Streamlit"
-exec streamlit run /home/apk/Main_Page.py --server.port 8501 --server.address 0.0.0.0
+exec streamlit run /home/apk/Hotel-Management-using-SQL-main/app/Main_Page.py --server.port 8501 --server.address 0.0.0.0
