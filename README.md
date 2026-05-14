@@ -27,8 +27,9 @@ Docker-project/
 │   └── nginx.yml                           # Exemplaire de configuration du serveur web nginx (déploiement via swarm)
 ├── web_app
 │   ├── Hotel-Management-using-SQL-main/
+|   ├── Images/                             # Différentes images liées au déploiement    
 │   │   ├── deploy.yml                      # Fichier de déploiement swarm(projet plus MYSQL)
-│   │   ├── Dockerfile                      # Fichier pour la construction de l'image et les bonnes pratiques à adopter
+│   │   ├── Dockerfile                      # Construction d'image et bonnes pratiques
 │   │   ├── w-db.sh                         # Script d'attente de la base de données
 └── └── README.md                           # Description générale du projet
 
