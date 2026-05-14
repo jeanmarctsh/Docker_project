@@ -1,4 +1,5 @@
 
+
 ## OBJECTIF ? MAITRISE, PRISE EN MAIN ET DEPLOIEMENT D'UNE APPLICATION PYTHON AVEC DOCKER SWARM POUR UNE HAUTE DISPONIBILITE
 
 
@@ -11,6 +12,7 @@ services:
 ## l'image sera téléchargée via le docker registry une fois ok
   myapp:
     image: marco24561/my-app:1.0
+    entrypoint: ["streamlit", "run", "Main_Page.py", "--server.port=8501", "--server.address=0.0.0.0","--browser.gatherUsageStats=false"]
     deploy:
       mode: replicated
       replicas: 3
@@ -23,9 +25,12 @@ services:
       - "8501:8501"
     environment:
       DB_HOST: ${DB_HOST}
-      DB_NAME : ${DB_NAME}
-      DB_USER : ${DB_USER}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
       DB_PASS_PATH: /run/secrets/mysql_secret
+      STREAMLIT_HOME: /home/apk
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_secret
     secrets:
       - mysql_secret
     networks:
@@ -51,6 +56,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_secret
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_secret
     secrets:
       - mysql_secret  
     
@@ -62,7 +68,8 @@ services:
       retries: 5
     volumes:
       - bdd_data:/var/lib/mysql
-      - .Hotel-Management-using-SQL-main/db/commands.sql:/docker-entrypoint-initdb.d/commands.sql
+     # - .Hotel-Management-using-SQL-main/db/commands.sql:/docker-entrypoint-initdb.d/commands.sql
+      - /home/gitea/c/Docker_project/web_app/Hotel-Management-using-SQL-main/db/commands.sql:/docker-entrypoint-initdb.d/commands.sql
     networks:
       - swarm_network
   
