@@ -49,9 +49,10 @@ Une fois le déploiement terminé, l'infrastructure doit présenter l'état suiv
    ```
 2. Distribution sur le cluster (Conteneurs répartis sur vos différents nœuds) :
    
+   
     `MYAPP_myapp.1` branché sur le nœud __gitea-ubuntu__
     `MYAPP_myapp.2` branché sur le nœud __marc-ubuntu__
-    `MYAPP_myapp.3` branché sur le nœud __ansible-ubuntu__
+    `MYAPP_myapp.3` branché sur le nœud __ansible-ubuntu__ 
 
 3. Application Streamlit prête :
    
@@ -65,49 +66,49 @@ Pour déployer ce projet, veuillez:
 
 1. Clonez le dépôt Git sur votre nœud Manager :
    
-```bash
-git clone git@github.com:jeanmarctsh/Docker_project.git
-cd Docker_project/web_app/Hotel-Management-using-SQL-main/
-```
-> ⚠️ __Note importante__ : Assurez-vous d'avoir créé et configuré votre secret Docker Swarm (`docker secret create`) avant de passer à l'étape suivante.
+    ```bash
+    git clone git@github.com:jeanmarctsh/Docker_project.git
+    cd Docker_project/web_app/Hotel-Management-using-SQL-main/
+    ```
+    > ⚠️ __Note importante__ : Assurez-vous d'avoir créé et configuré votre secret Docker Swarm.
 
 2. Renseignement des valeurs
 
-Veuillez reneigner les différentes valeurs en fonctions de vos besoins
+    Veuillez reneigner les différentes valeurs en fonctions de vos besoins
 
-veuillez créer le fichier .env à la racine du dossier web_app en vous référant au fichier .env.exemple et adopter les valeurs en 
-fonction de vos besoins
+    veuillez créer le fichier .env à la racine du dossier web_app en vous référant au fichier .env.exemple et 
+    adopter les valeurs en fonction de vos besoins
 
 3. Déploiement de la Stack
 
-Depuis le nœud Manager uniquement , lancez le déploiement du service :
+    Depuis le nœud Manager uniquement , lancez le déploiement du service :
 
-```bash
-cd Docker_project/web_app  && docker stack deploy -c deploy.yml MYAPP
-```
+    ```bash
+    cd Docker_project/web_app  && docker stack deploy -c deploy.yml MYAPP
+    ```
 4. Vérification du déploiement
 
-Après environ une minute, validez que l'application est correctement répartie et en Haute Disponibilité :
+    Après environ une minute, validez que l'application est correctement répartie et en Haute Disponibilité :
 
-```bash
-docker stack services MYAPP
-```
+    ```bash
+    docker stack services MYAPP
+    ```
 
-L'output doit afficher `3/3` répliques pour le service web.
+    L'output doit afficher `3/3` répliques pour le service web.
 
-```bash
-docker stack ps MYAPP
-```
-L'output doit montrer les conteneurs répartis sur vos différents nœuds (`Running`).
+    ```bash
+    docker stack ps MYAPP
+    ```
+    L'output doit montrer les conteneurs répartis sur vos différents nœuds (`Running`).
 
 5. Application Streamlit prête
 
-Pour afficher les logs de l'application déployée afin de voir l'état général ainsi que le port `8501`, 
-veuillez saisir la commande :
+    Pour afficher les logs de l'application déployée afin de voir l'état général ainsi que le port `8501`, 
+    veuillez saisir la commande :
 
-```bash
-docker service logs MYAPP_myapp
-```
+    ```bash
+    docker service logs MYAPP_myapp
+    ```
 
 ---
 
