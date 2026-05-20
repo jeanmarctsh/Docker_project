@@ -1,10 +1,9 @@
 
 
-## OBJECTIF ? MAITRISE, PRISE EN MAIN ET DEPLOIEMENT D'UNE APPLICATION PYTHON AVEC DOCKER SWARM POUR UNE HAUTE DISPONIBILITE
-
+## OBJECTIF ? COMPREHENSION, MAITRISE, PRISE EN MAIN ET DEPLOIEMENT D'UNE APPLICATION PYTHON AVEC DOCKER SWARM POUR UNE HAUTE DISPONIBILITE
+## c'est un projet test et de compréhension sur les différents concepts de HA , volume, réseau, variables pour application et base de données
 
 version: "3.8"
-
 
 services: 
 
@@ -60,7 +59,7 @@ services:
     secrets:
       - mysql_secret  
     
-
+    ## ⚠️⚠️⚠️ Ne pas afficher le secret au niveau du healthcheck: ATTENTION, veuillez passer : DB_PASS_PATH
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u marco -p$$(cat /run/secrets/mysql_secret)"]
       interval: 5s
