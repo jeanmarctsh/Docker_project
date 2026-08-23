@@ -2,7 +2,7 @@
 FROM python:3.13-slim
 
 # Métadonnées identifiant l'auteur
-LABEL author="APP Download FROM GITHUB and DOKERFILE-DEPLOY BY JM "
+LABEL maintainer="JM"
 
 # Installation de différentes dépendances système nécessaires (client MySQL)
 # Le nettoyage des listes apt permet d'alléger l'image
