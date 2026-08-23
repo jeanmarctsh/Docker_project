@@ -12,6 +12,8 @@ Le but principal du projet est de mettre en place une architecture scalable perm
 
 C’est pourquoi, dans le cadre de ce projet, nous allons utiliser **Docker Swarm** afin de rendre ce concept plus viable et de faciliter la gestion des différents nœuds et services.
 
+La haute disponibilité concerne uniquement la couche applicative. La base de données MySQL n’est pas répliquée, conformément aux contraintes de sécurité et de conformité des données retenues pour ce projet.
+
 
 
 ## 🛠️ Prérequis
