@@ -1,13 +1,24 @@
 # 🚀  Conteneurisation et déploiement d'une application python avec base de données mysql
 
-## Prise en main et utilisation de docker swarm pour une Haute disponibilité 
 
-## 🚧 Ceci est un projet à but compréhensive (En cours de finition)  
+## Problématique
+
+Le déploiement d’un service à fort trafic nécessite la mise en place de mécanismes permettant d’assurer sa disponibilité et sa continuité de fonctionnement. L’objectif est d’éviter les interruptions de service, de réduire le downtime et de garantir aux utilisateurs un accès continu aux différents services.
+
+
+## 🚧 Ceci est un projet à but pédagogique
+
+Le but principal du projet est de mettre en place une architecture scalable permettant d’assurer le fonctionnement du service tout en limitant les interruptions en cas de défaillance technique d’un nœud.
+
+C’est pourquoi, dans le cadre de ce projet, nous allons utiliser **Docker Swarm** afin de rendre ce concept plus viable et de faciliter la gestion des différents nœuds et services.
+
+
 
 ## 🛠️ Prérequis
 
 - Un cluster **Docker Swarm** fonctionnel (1 nœud Manager et au moins 2 nœuds Workers).
 - Docker Engine installé et configuré en mode Swarm sur l'ensemble des machines.
+- Une mise en réseau de différents noeuds
 - Une bonne connectivité réseau
 
 ---
@@ -39,7 +50,7 @@ Docker-project/
 
 # Output (Résultats attendus)
 
-Une fois le déploiement terminé, l'infrastructure doit présenter l'état suivant :
+Comme Output, nous aurons:
 
 1. Haute disponibilité activée  (`3/3` répliques fonctionnelles) :
    
@@ -109,7 +120,29 @@ Pour déployer ce projet, veuillez:
     ```bash
     docker service logs MYAPP_myapp
     ```
+Voici un extrait de l'affichage des logs après le déploiement:
 
+![docker service logs MYAPP_my](Images/Etat_global_swarm.PNG)
+
+
+# Accès rapide au service déployé avec docker swarm depuis le manager
+
+| Service   | IP / Node accessible | Port publié | Description                                      |
+|-----------|----------------------|-------------|--------------------------------------------------|
+| MYAPP_my  | 127.0.0.1            | 8501        | Interface utilisateur accessible via navigateur  |
+
+__L'application est accessible depuis le master ainsi que depuis deux workers__
+
+
+# Accès rapide au service déployé avec docker swarm depuis le worker node
+
+| Service   | IP / Node accessible | Port publié | Description                                      |
+|-----------|----------------------|-------------|--------------------------------------------------|
+| MYAPP_my  | IP DU WORKER NODE    | 8501        | Interface utilisateur accessible via navigateur  |
+
+En image, cela se présente de la manière ci-après:
+
+![docker service logs MYAPP_my](Images/Welcome_page.PNG)
 ---
 
 ## ✍️ AUTEUR
